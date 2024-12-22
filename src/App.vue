@@ -1,0 +1,10 @@
+<template>
+  <div>
+    <Login></Login>
+  </div>
+</template>
+<script setup lang="ts">
+import Login from "./views/Login.vue";
+</script>
+
+<style scoped></style>
