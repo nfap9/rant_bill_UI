@@ -1,6 +1,11 @@
 <template>
   <div class="login-contain">
-    <input class="input" type="text" v-model="email" placeholder="请输入邮箱" />
+    <input
+      class="input"
+      type="text"
+      v-model="username"
+      placeholder="请输入账号"
+    />
     <input
       class="input"
       type="password"
@@ -14,12 +19,12 @@
 import { ref } from "vue";
 import user from "../api/user";
 
-const email = ref("test3@ee.com");
+const username = ref("user1");
 const password = ref("1234");
 
 const handleLogin = () => {
-  console.log(email.value, password.value);
-  user.login(email.value, password.value).then((res) => {
+  console.log(username.value, password.value);
+  user.login(username.value, password.value).then((res) => {
     console.log(res);
   });
 };
