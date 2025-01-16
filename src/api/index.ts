@@ -20,6 +20,9 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    }
     return response.data;
   },
   (error) => {
