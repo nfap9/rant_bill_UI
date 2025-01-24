@@ -1,5 +1,7 @@
 <template>
-  <div>房屋管理</div>
+  <houseTable></houseTable>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import houseTable from "./houseTable.vue";
+</script>

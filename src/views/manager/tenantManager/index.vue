@@ -1,5 +1,7 @@
 <template>
-  <div>租户管理</div>
+  <tenantTable></tenantTable>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import tenantTable from "./tenantTable.vue";
+</script>
