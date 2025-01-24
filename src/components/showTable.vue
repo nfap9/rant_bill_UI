@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" stripe style="width: 100%">
+  <el-table :data="tableData" stripe style="width: 100%" border>
     <template v-for="item in tableConfig">
       <el-table-column
         :prop="item.prop"
