@@ -12,35 +12,49 @@
           v-model="formData.password"
           placeholder="请输入密码"
           type="password"
-          show-password
+        ></el-input
+      ></el-form-item>
+
+      <el-form-item label="确认密码" prop="confirmPassword">
+        <el-input
+          v-model="formData.confirmPassword"
+          placeholder="请再次输入密码"
+          type="password"
         ></el-input
       ></el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onsubmit">登录</el-button>
-        <el-button @click="toRegist">注册</el-button>
+        <el-button type="primary" @click="register">注册</el-button>
+        <el-button @click="toLogin">返回登录</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-import user from "../api/user";
+import { ref, onMounted } from "vue";
 
 const formData = ref({
-  username: "user1",
-  password: "1234",
+  username: "",
+  password: "",
+  confirmPassword: "",
 });
 
-const onsubmit = () => {
+const register = () => {
   console.log(formData.value.username, formData.value.password);
-  user.login(formData.value.username, formData.value.password).then((res) => {
-    console.log(res);
-  });
-};
-
-const toRegist = () => {
   console.log("注册");
 };
+const toLogin = () => {
+  console.log("去登录");
+};
+const initData = () => {
+  formData.value = {
+    username: "",
+    password: "",
+    confirmPassword: "",
+  };
+};
+onMounted(() => {
+  initData();
+});
 </script>
 <style scoped>
 .login-contain {
