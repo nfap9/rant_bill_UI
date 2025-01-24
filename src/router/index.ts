@@ -1,22 +1,30 @@
 import { createMemoryHistory, createRouter } from "vue-router";
 
-import Login from "../views/Login.vue";
-import register from "../views/Register.vue";
-import Manager from "../views/manager/index.vue";
-import HouseManager from "../views/manager/houseManager/index.vue";
-
 const routes = [
-  { path: "/", redirect: "/login" },
+  { path: "/", redirect: "/manager" },
   {
     path: "/manager",
     name: "Manager",
-    component: Manager,
+    component: () => import("../views/manager/index.vue"),
     children: [
-      { path: "/house-manager", name: "HouseManager", component: HouseManager },
+      {
+        path: "/house-manager",
+        name: "HouseMamnager",
+        component: () => import("../views/manager/houseManager/index.vue"),
+      },
     ],
   },
-  { path: "/login", name: "Login", component: Login },
-  { path: "/register", name: "Register", component: register },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/Register.vue"),
+  },
+  { path: "/:pathMatch(.*)", component: () => import("../views/NotFound.vue") },
 ];
 
 const router = createRouter({
@@ -26,10 +34,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.token ? true : false;
-  if (to.name !== "Login" && !isAuthenticated) {
-    next({ name: "Login" });
-  } else {
+  console.log(isAuthenticated);
+  if (isAuthenticated) {
     next();
+  } else {
+    next({ name: "Login" });
   }
 });
 export default router;

@@ -1,6 +1,6 @@
 <template>
   <div class="login-contain">
-    <el-form :model="formData">
+    <el-form ref="ruleForm" :model="formData" :rules="rules">
       <el-form-item label="账号" prop="username">
         <el-input
           v-model="formData.username"
@@ -23,24 +23,56 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import user from "../api/user";
-
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const formData = ref({
-  username: "user1",
-  password: "1234",
+  username: "",
+  password: "",
 });
 
+const ruleForm = ref();
+const rules = {
+  username: [{ required: true, message: "请输入用户名" }],
+  password: [{ required: true, message: "请输入密码" }],
+};
+const toManager = () => {
+  router.push("/manager");
+};
+const toRegist = () => {
+  router.push("/register");
+};
+
 const onsubmit = () => {
-  console.log(formData.value.username, formData.value.password);
-  user.login(formData.value.username, formData.value.password).then((res) => {
-    console.log(res);
+  ruleForm.value?.validate((res) => {
+    if (res) {
+      user
+        .login(formData.value.username, formData.value.password)
+        .then((res: any) => {
+          if (res.token) {
+            ElMessage({
+              message: "登录成功",
+              type: "success",
+            });
+            toManager();
+          }
+        });
+    }
   });
 };
 
-const toRegist = () => {
-  console.log("注册");
+const init = () => {
+  formData.value = {
+    username: "user1",
+    password: "1234",
+  };
 };
+
+onMounted(() => {
+  init();
+});
 </script>
 <style scoped>
 .login-contain {
