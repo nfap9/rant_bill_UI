@@ -1,12 +1,17 @@
 <template>
-  <el-menu class="manu" default-active="house-manager" router>
-    <el-menu-item index="house-manager">
-      <el-icon><icon-menu /></el-icon>
-      <span>房屋管理</span>
+  <el-menu class="manu" :default-active="menus[0].path" router>
+    <el-menu-item v-for="item in menus" :index="item.path">
+      <span>{{ item.label }}</span>
     </el-menu-item>
   </el-menu>
 </template>
-<script></script>
+<script setup lang="ts">
+const menus = [
+  { path: "/overview", label: "总览" },
+  { path: "/house-manager", label: "房屋管理" },
+  { path: "/tenant-manager", label: "租户管理" },
+];
+</script>
 <style scoped lang="less">
 .manu {
   height: 100%;

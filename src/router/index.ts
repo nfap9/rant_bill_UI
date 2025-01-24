@@ -5,12 +5,23 @@ const routes = [
   {
     path: "/manager",
     name: "Manager",
+    redirect: "/overview",
     component: () => import("../views/manager/index.vue"),
     children: [
+      {
+        path: "/overview",
+        name: "Overview",
+        component: () => import("../views/manager/overview/index.vue"),
+      },
       {
         path: "/house-manager",
         name: "HouseMamnager",
         component: () => import("../views/manager/houseManager/index.vue"),
+      },
+      {
+        path: "/tenant-manager",
+        name: "TenantManager",
+        component: () => import("../views/manager/tenantManager/index.vue"),
       },
     ],
   },
@@ -33,12 +44,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.token ? true : false;
-  console.log(isAuthenticated);
-  if (isAuthenticated) {
-    next();
-  } else {
-    next({ name: "Login" });
-  }
+  if (to.path === "/login") return next();
+  //获取token
+  const tokenStr = window.localStorage.getItem("token");
+  if (!tokenStr) return next("/login");
+  next();
 });
+
 export default router;
