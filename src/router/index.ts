@@ -14,9 +14,9 @@ const routes = [
         component: () => import("../views/manager/overview/index.vue"),
       },
       {
-        path: "/house-manager",
-        name: "HouseMamnager",
-        component: () => import("../views/manager/houseManager/index.vue"),
+        path: "/room-manager",
+        name: "RoomManager",
+        component: () => import("../views/manager/roomManager/index.vue"),
       },
       {
         path: "/tenant-manager",
