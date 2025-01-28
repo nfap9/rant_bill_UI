@@ -46,6 +46,7 @@
     </template>
   </el-table>
   <el-pagination
+    class="pager"
     :current-page="props.pager?.pageIndex"
     :page-size="props.pager?.pageSize"
     :total="props.pager?.total"
@@ -79,11 +80,11 @@ const handleLinkClick = (row, columnConfig, prop) => {
   }
   clickCallback(row);
 };
-const handleCurrentChange = () => {
-  emits("currentChange");
+const handleCurrentChange = (pageIndex) => {
+  emits("currentChange", pageIndex);
 };
-const handleSizeChange = () => {
-  emits("sizeChange");
+const handleSizeChange = (pageSize) => {
+  emits("sizeChange", pageSize);
 };
 </script>
 
@@ -94,5 +95,8 @@ const handleSizeChange = () => {
 .active {
   color: blue;
   cursor: pointer;
+}
+.pager {
+  margin-top: 32px;
 }
 </style>

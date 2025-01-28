@@ -50,7 +50,7 @@ const tableConfig = [
     ],
   },
 ];
-const pager = ref<Pager>({
+const pager = ref({
   pageIndex: 1,
   pageSize: 10,
   total: 0,
@@ -58,25 +58,28 @@ const pager = ref<Pager>({
 
 const tableData = ref([]);
 
-function handleCurrentChange() {
-  getRoomList(pager.value);
+function handleCurrentChange(pageIndex: number) {
+  getRoomList({ pageIndex, pageSize: pager.value.pageSize });
 }
-function handleSizeChange() {
-  getRoomList(pager.value);
+function handleSizeChange(pageSize: number) {
+  getRoomList({ pageSize, pageIndex: pager.value.pageIndex });
 }
 
 function toTenantDetail(id: string) {
   console.log("查看租户详情", id);
 }
-function getRoomList(pager: Pager) {
-  roomApi.list(pager).then((res: any) => {
+function getRoomList(_pager: Pager) {
+  roomApi.list(_pager).then((res: any) => {
     tableData.value = res.data;
     pager.value = res.pager;
   });
 }
 function deleteRoom(row: any) {
-  console.log("删除", row);
-  roomApi.delete({ id: row.id });
+  roomApi.delete(row._id).then((res: any) => {
+    if (res) {
+      getRoomList({ pageIndex: 1, pageSize: 10 });
+    }
+  });
 }
 function editRoom(row: any) {
   console.log("编辑", row);
