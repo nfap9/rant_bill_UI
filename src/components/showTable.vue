@@ -9,11 +9,12 @@
         :filter-method="item.filterMethod"
         :sortable="item.sortable"
         show-overflow-tooltip
+        :fixed="item.fixed"
       >
         <template #default="scope">
           <!-- 集合 -->
           <span v-if="item.type === 'gather'">
-            <template v-for="tag in scope.row[item.prop].split(';')">
+            <template v-for="tag in scope.row[item.prop]">
               <el-tag class="cell-tag" v-if="tag" type="primary">{{
                 tag
               }}</el-tag>
@@ -36,6 +37,9 @@
             </el-button>
           </span>
           <!-- 普通文本 -->
+          <span v-else-if="item.mapping">{{
+            item.mapping(scope.row[item.prop]) ?? "--"
+          }}</span>
           <span v-else>{{ scope.row[item.prop] ?? "--" }}</span>
         </template>
       </el-table-column>
@@ -52,11 +56,10 @@
   />
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
 import { Pager } from "@/types/common";
 type Props = {
-  tableConfig: Array;
-  tableData: Array;
+  tableConfig: Array<any>;
+  tableData: Array<any>;
   pager: Pager;
 };
 const props = withDefaults(defineProps<Props>(), {

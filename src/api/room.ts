@@ -14,4 +14,7 @@ export default {
   list: (pager: Pager) => {
     return post("/room/list", { pager });
   },
+  delete: (id: string) => {
+    return post(`/room/delete${id}`);
+  },
 };
