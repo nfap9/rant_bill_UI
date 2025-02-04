@@ -46,7 +46,7 @@
     </template>
   </el-table>
   <el-pagination
-    v-if="pager.disabled"
+    v-if="!pager.disabled"
     class="pager"
     :current-page="pager?.pageIndex"
     :page-size="pager?.pageSize"
