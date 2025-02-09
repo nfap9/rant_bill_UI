@@ -48,9 +48,9 @@
   <el-pagination
     v-if="showPager"
     class="pager"
-    :current-page="props.pager?.pageIndex"
-    :page-size="props.pager?.pageSize"
-    :total="props.pager?.total"
+    :current-page="pager?.pageIndex"
+    :page-size="pager?.pageSize"
+    :total="pager?.total"
     :page-sizes="[10, 20, 30, 50]"
     layout="total, sizes, prev, pager, next, jumper"
     @size-change="handleSizeChange"
@@ -70,6 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
   tableData: () => [],
   showPager: true,
   pager: () => ({
+    disabled: false,
     pageSize: 10,
     pageIndex: 1,
     total: 0,
