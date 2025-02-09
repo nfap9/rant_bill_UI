@@ -1,18 +1,24 @@
 <template>
+  <el-button class="form-button" @click="handleAddClick" type="primary"
+    >新增</el-button
+  >
   <showTable
     :table-config="tableConfig"
     :table-data="tableData"
-    :pager="pager"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
+    :showPager="false"
   ></showTable>
+  <addOrEditApartment
+    ref="editRef"
+    @success="getApartmentList"
+  ></addOrEditApartment>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import showTable from "@/components/showTable.vue";
-import roomApi from "@/api/apartment";
-import { Pager } from "@/types/common";
-import { apartmentStatuEmuns, apartmentStatus } from "../../../enums/apartment";
+import apartmentApi from "@/api/apartment";
+import { apartmentStatuEmuns, apartmentStatus } from "@/enums/apartment";
+import addOrEditApartment from "./addOrEditApartment.vue";
+
 const tableConfig = [
   { prop: "name", label: "公寓名称" },
   {
@@ -29,18 +35,15 @@ const tableConfig = [
   {
     prop: "elevator",
     label: "是否有电梯",
+    mapping: (val) => (val ? "是" : "否"),
   },
   {
     prop: "options",
     label: "操作",
     type: "options",
     fixed: "right",
-    width: 150,
+    width: 120,
     buttons: [
-      {
-        text: "详情",
-        callback: (row: any) => roomDetail(row),
-      },
       {
         text: "编辑",
         callback: (row: any) => editRoom(row),
@@ -52,46 +55,38 @@ const tableConfig = [
     ],
   },
 ];
-const pager = ref({
-  pageIndex: 1,
-  pageSize: 10,
-  total: 0,
-});
-
 const tableData = ref([]);
+const editRef = ref();
 
-function handleCurrentChange(pageIndex: number) {
-  getRoomList({ pageIndex, pageSize: pager.value.pageSize });
-}
-function handleSizeChange(pageSize: number) {
-  getRoomList({ pageSize, pageIndex: pager.value.pageIndex });
-}
-
-function toTenantDetail(id: string) {
-  console.log("查看租户详情", id);
-}
-function getRoomList(_pager: Pager) {
-  roomApi.list(_pager).then((res: any) => {
+function getApartmentList() {
+  apartmentApi.list().then((res: any) => {
     tableData.value = res.data;
-    pager.value = res.pager;
   });
 }
+
+const handleAddClick = () => {
+  editRef.value?.addMode();
+};
+
 function deleteRoom(row: any) {
-  roomApi.delete(row._id).then((res: any) => {
+  apartmentApi.delete(row._id).then((res: any) => {
     if (res) {
-      getRoomList({ pageIndex: 1, pageSize: 10 });
+      getApartmentList();
     }
   });
 }
+
 function editRoom(row: any) {
-  console.log("编辑", row);
+  editRef.value?.editMode(row._id);
 }
-function roomDetail(row: any) {
-  console.log("详情", row);
-}
+
 onMounted(() => {
-  getRoomList({ pageIndex: 1, pageSize: 10 });
+  getApartmentList();
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.form-button {
+  margin-bottom: 24px;
+}
+</style>

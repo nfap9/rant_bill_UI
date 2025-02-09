@@ -1,4 +1,5 @@
 import { createMemoryHistory, createRouter } from "vue-router";
+import myMessage from "../utils/myMessage";
 
 const routes = [
   { path: "/", redirect: "/manager" },
@@ -34,11 +35,17 @@ const routes = [
   {
     path: "/login",
     name: "Login",
+    meta: {
+      noLogin: true,
+    },
     component: () => import("../views/Login.vue"),
   },
   {
     path: "/register",
     name: "Register",
+    meta: {
+      noLogin: true,
+    },
     component: () => import("../views/Register.vue"),
   },
   { path: "/:pathMatch(.*)", component: () => import("../views/NotFound.vue") },
@@ -50,10 +57,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/login") return next();
+  if (to.meta.noLogin) return next();
   //获取token
   const tokenStr = window.localStorage.getItem("token");
-  if (!tokenStr) return next("/login");
+  if (!tokenStr) {
+    return next("/login");
+  }
   next();
 });
 

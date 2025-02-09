@@ -46,6 +46,7 @@
     </template>
   </el-table>
   <el-pagination
+    v-if="showPager"
     class="pager"
     :current-page="props.pager?.pageIndex"
     :page-size="props.pager?.pageSize"
@@ -61,11 +62,13 @@ import { Pager } from "@/types/common";
 type Props = {
   tableConfig: Array<any>;
   tableData: Array<any>;
-  pager: Pager;
+  showPager?: boolean;
+  pager?: Pager;
 };
 const props = withDefaults(defineProps<Props>(), {
   tableConfig: () => [],
   tableData: () => [],
+  showPager: true,
   pager: () => ({
     pageSize: 10,
     pageIndex: 1,

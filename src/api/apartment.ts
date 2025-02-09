@@ -1,18 +1,17 @@
-import type { Pager } from "../types/common";
 import { get, post } from "./index";
 
 export default {
-  add: (apartmentData: any) => {
-    return post("/apartment/add", { room: apartmentData });
+  add: (apartment: any) => {
+    return post("/apartment/add", { apartment });
   },
-  update: (apartmentId: string, apartmentData: any) => {
-    return post("/apartment/login", { apartmentId, apartmentData });
+  update: (apartmentId: string, apartment: any) => {
+    return post("/apartment/update", { apartmentId, apartment });
   },
   detail: (id: string) => {
     return get(`/apartment/detail/${id}`);
   },
-  list: (pager: Pager) => {
-    return post("/apartment/list", { pager });
+  list: () => {
+    return get("/apartment/list");
   },
   delete: (id: string) => {
     return post(`/apartment/delete/${id}`);

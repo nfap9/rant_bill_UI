@@ -1,5 +1,7 @@
 import axios from "axios";
-
+import { useRouter } from "vue-router";
+import myMessage from "../utils/myMessage";
+const router = useRouter();
 const instance = axios.create({
   baseURL: "http://localhost:3000/api",
   timeout: 10000,
@@ -30,7 +32,8 @@ instance.interceptors.response.use(
       // 根据HTTP状态码判断错误类型
       switch (error.response.status) {
         case 401:
-          // 处理未授权错误
+          myMessage.error("登陆已过期");
+          toLogin();
           break;
         case 403:
           // 处理禁止访问错误
@@ -38,8 +41,10 @@ instance.interceptors.response.use(
         case 404:
           // 处理资源不存在错误
           break;
+        case 400:
+          break;
         default:
-          // 处理其他错误
+          myMessage.error("网络异常");
           break;
       }
     } else if (error.request) {
@@ -50,6 +55,11 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+function toLogin() {
+  localStorage.removeItem("token");
+  router.push("/login");
+}
 export function get(url: string, params = {}) {
   return instance.get(url, { params });
 }
