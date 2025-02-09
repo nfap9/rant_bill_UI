@@ -5,8 +5,8 @@ export default {
   add: (roomData: any) => {
     return post("/room/add", { room: roomData });
   },
-  update: (username: string, password: string) => {
-    return post("/room/login", { username, password });
+  update: (roomId: string, room: any) => {
+    return post("/room/update", { roomId, room });
   },
   detail: (id: string) => {
     return get(`/room/detail/${id}`);

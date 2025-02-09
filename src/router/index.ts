@@ -23,6 +23,12 @@ const routes = [
         name: "TenantManager",
         component: () => import("../views/manager/tenantManager/index.vue"),
       },
+
+      {
+        path: "/apartment-manager",
+        name: "ApartmentManager",
+        component: () => import("../views/manager/apartmentManager/index.vue"),
+      },
     ],
   },
   {
