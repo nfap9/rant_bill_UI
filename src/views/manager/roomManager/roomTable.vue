@@ -1,4 +1,7 @@
 <template>
+  <el-button class="form-button" @click="handleAddClick" type="primary"
+    >新增</el-button
+  >
   <showTable
     :table-config="tableConfig"
     :table-data="tableData"
@@ -6,16 +9,19 @@
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
   ></showTable>
+  <addRoom ref="formRef" @success="getRoomList"></addRoom>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import showTable from "@/components/showTable.vue";
-import roomApi from "@/api/room";
+import roomApi from "@/api/roomApi";
 import { Pager } from "@/types/common";
-import { roomStatus, roomStatuEmuns } from "../../../enums/room";
+import { roomStatus, roomStatuEmuns } from "@/enums/room";
+import addRoom from "./roomForm.vue";
+const formRef = ref();
 const tableConfig = [
   { prop: "roomNumber", label: "房屋编号" },
-  { prop: "apartment", label: "所属公寓" },
+  { prop: "apartmentName", label: "所属公寓" },
   {
     prop: "status",
     label: "当前状态",
@@ -74,6 +80,9 @@ function getRoomList(_pager: Pager) {
     pager.value = res.pager;
   });
 }
+const handleAddClick = () => {
+  formRef.value?.addMode();
+};
 function deleteRoom(row: any) {
   roomApi.delete(row._id).then((res: any) => {
     if (res) {
@@ -82,14 +91,18 @@ function deleteRoom(row: any) {
   });
 }
 function editRoom(row: any) {
-  console.log("编辑", row);
+  formRef.value?.editMode(row._id);
 }
 function roomDetail(row: any) {
-  console.log("详情", row);
+  formRef.value?.editMode(row._id);
 }
 onMounted(() => {
   getRoomList({ pageIndex: 1, pageSize: 10 });
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.form-button {
+  margin-bottom: 24px;
+}
+</style>

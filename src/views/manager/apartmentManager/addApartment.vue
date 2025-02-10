@@ -13,14 +13,14 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import apartment from "../../../api/apartment";
+import apartmentApi from "@/api/apartmentApi";
 const emits = defineEmits(["success"]);
 const form = ref({
   name: "",
   address: "",
 });
 const handleConfirm = () => {
-  apartment.add(form.value).then((res: any) => {
+  apartmentApi.add(form.value).then((res: any) => {
     emits("success");
   });
 };

@@ -28,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import apartmentApi from "@/api/apartment";
+import apartmentApi from "@/api/apartmentApi";
 import myMessage from "@/utils/myMessage";
 
 type ApartmentForm = {

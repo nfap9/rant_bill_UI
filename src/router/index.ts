@@ -29,6 +29,11 @@ const routes = [
         name: "ApartmentManager",
         component: () => import("../views/manager/apartmentManager/index.vue"),
       },
+      {
+        path: "/contract-manager",
+        name: "ContractManager",
+        component: () => import("../views/manager/contractManager/index.vue"),
+      },
     ],
   },
   {
@@ -60,7 +65,7 @@ router.beforeEach((to, from, next) => {
   //获取token
   const tokenStr = window.localStorage.getItem("token");
   if (!tokenStr) {
-    myMessage.error('请先登陆')
+    myMessage.error("请先登陆");
     return next("/login");
   }
   next();

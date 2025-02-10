@@ -16,13 +16,14 @@
           <span v-if="item.type === 'gather'">
             <template v-for="tag in scope.row[item.prop]">
               <el-tag class="cell-tag" v-if="tag" type="primary">{{
-                tag
+                tag.label
               }}</el-tag>
             </template>
           </span>
+          <!-- 链接 -->
           <span
             v-else-if="item.type === 'link'"
-            class="active"
+            :class="{ active: !!scope.row[item.prop] }"
             @click="handleLinkClick(scope.row, item, item.prop)"
           >
             {{ scope.row[item.prop] ?? "--" }}
@@ -78,6 +79,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emits = defineEmits(["sizeChange", "currentChange"]);
 const handleLinkClick = (row, columnConfig, prop) => {
+  if (!row[prop]) {
+    return;
+  }
   const clickCallback = columnConfig.callback;
   if (!clickCallback || typeof clickCallback !== "function") {
     return;

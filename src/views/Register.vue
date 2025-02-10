@@ -31,11 +31,12 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import user from "../api/user";
+import userApi from "@/api/user";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 const router = useRouter();
-const ruleForm = ref();
+const ruleFormRef = ref();
+
 const formData = ref({
   username: "",
   password: "",
@@ -45,7 +46,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请输入密码"));
   } else {
-    if (ruleForm.confirmPassword !== "") {
+    if (formData.value.confirmPassword !== "") {
       if (!ruleFormRef.value) return;
       ruleFormRef.value.validateField("confirmPassword");
     }
@@ -55,7 +56,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === "") {
     callback(new Error("请再次输入密码"));
-  } else if (value !== ruleForm.password) {
+  } else if (value !== formData.value.password) {
     callback(new Error("两次输入的密码不一致!"));
   } else {
     callback();
@@ -77,9 +78,9 @@ const toLogin = () => {
 };
 
 const register = () => {
-  ruleForm.value?.validate((valid) => {
+  ruleFormRef.value?.validate((valid) => {
     if (valid) {
-      user
+      userApi
         .register(formData.value.username, formData.value.password)
         .then((res: any) => {
           console.log(res);

@@ -5,37 +5,40 @@
   <showTable
     :table-config="tableConfig"
     :table-data="tableData"
-    :showPager="false"
+    :pager="pager"
   ></showTable>
-  <addOrEditApartment
-    ref="editRef"
-    @success="getApartmentList"
-  ></addOrEditApartment>
+  <contractForm ref="formRef" @success="getContractList"></contractForm>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import showTable from "@/components/showTable.vue";
-import apartmentApi from "@/api/apartmentApi";
+import contractApi from "@/api/contractApi";
 import { apartmentStatuEmuns, apartmentStatus } from "@/enums/apartment";
-import addOrEditApartment from "./addOrEditApartment.vue";
+import contractForm from "./contractForm.vue";
+import { Pager } from "@/types/common";
 
 const tableConfig = [
-  { prop: "name", label: "公寓名称" },
+  { prop: "partyA", label: "甲方" },
+  {
+    prop: "partyB",
+    label: "乙方",
+  },
+  { prop: "room", label: "房间" },
+  {
+    prop: "price",
+    label: "租金",
+  },
+  {
+    prop: "startTime",
+    label: "起租日期",
+  },
+  {
+    prop: "endTime",
+    label: "到期日期",
+  },
   {
     prop: "status",
     label: "当前状态",
-    mapping: (val: apartmentStatuEmuns = apartmentStatuEmuns.UNKNOWN) =>
-      apartmentStatus[val],
-  },
-  { prop: "address", label: "地址" },
-  {
-    prop: "floors",
-    label: "楼层数",
-  },
-  {
-    prop: "elevator",
-    label: "是否有电梯",
-    mapping: (val) => (val ? "是" : "否"),
   },
   {
     prop: "options",
@@ -56,32 +59,37 @@ const tableConfig = [
   },
 ];
 const tableData = ref([]);
-const editRef = ref();
+const formRef = ref();
 
-function getApartmentList() {
-  apartmentApi.list().then((res: any) => {
+const pager = ref<Pager>({
+  pageIndex: 1,
+  pageSize: 10,
+  total: 0,
+});
+function getContractList() {
+  contractApi.list(pager.value).then((res: any) => {
     tableData.value = res.data;
   });
 }
 
 const handleAddClick = () => {
-  editRef.value?.addMode();
+  formRef.value?.addMode();
 };
 
 function deleteRoom(row: any) {
-  apartmentApi.delete(row._id).then((res: any) => {
+  contractApi.delete(row._id).then((res: any) => {
     if (res) {
-      getApartmentList();
+      getContractList();
     }
   });
 }
 
 function editRoom(row: any) {
-  editRef.value?.editMode(row._id);
+  formRef.value?.editMode(row._id);
 }
 
 onMounted(() => {
-  getApartmentList();
+  getContractList();
 });
 </script>
 

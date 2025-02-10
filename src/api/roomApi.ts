@@ -11,8 +11,8 @@ export default {
   detail: (id: string) => {
     return get(`/room/detail/${id}`);
   },
-  list: (pager: Pager) => {
-    return post("/room/list", { pager });
+  list: (pager?: Pager, filter?: any) => {
+    return post("/room/list", { pager, filter });
   },
   delete: (id: string) => {
     return post(`/room/delete/${id}`);
