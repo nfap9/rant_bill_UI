@@ -20,6 +20,11 @@ const routes = [
         component: () => import("../views/manager/roomManager/index.vue"),
       },
       {
+        path: "/room-manager/detail/:id",
+        name: "RoomDetail",
+        component: () => import("../views/manager/roomManager/detail.vue"),
+      },
+      {
         path: "/tenant-manager",
         name: "TenantManager",
         component: () => import("../views/manager/tenantManager/index.vue"),

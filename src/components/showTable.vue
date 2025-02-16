@@ -38,6 +38,9 @@
             </el-button>
           </span>
           <!-- 普通文本 -->
+          <span v-else-if="item.formatter">{{
+            item.formatter(scope.row[item.prop]) ?? "--"
+          }}</span>
           <span v-else-if="item.mapping">{{
             item.mapping(scope.row[item.prop]) ?? "--"
           }}</span>

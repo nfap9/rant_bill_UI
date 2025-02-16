@@ -18,9 +18,18 @@ import roomApi from "@/api/roomApi";
 import { Pager } from "@/types/common";
 import { roomStatus, roomStatuEmuns } from "@/enums/room";
 import addRoom from "./roomForm.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const formRef = ref();
 const tableConfig = [
-  { prop: "roomNumber", label: "房屋编号" },
+  {
+    prop: "roomNumber",
+    label: "房屋编号",
+    type: "link",
+    callback: (row) => {
+      toRoomDetailPage(row);
+    },
+  },
   { prop: "apartmentName", label: "所属公寓" },
   {
     prop: "status",
@@ -95,6 +104,9 @@ function editRoom(row: any) {
 }
 function roomDetail(row: any) {
   formRef.value?.editMode(row._id);
+}
+function toRoomDetailPage(row) {
+  router.push({ path: `/room-manager/detail/${row._id}` });
 }
 onMounted(() => {
   getRoomList({ pageIndex: 1, pageSize: 10 });
