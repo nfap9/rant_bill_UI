@@ -145,7 +145,7 @@ const editMode = (id) => {
 };
 function getOptions() {
   apartmentApi.list().then((res: any) => {
-    options.value.apartment = res.data.map((item) => ({
+    options.value.apartment = res.data?.records.map((item) => ({
       label: item.name,
       value: item._id,
     }));

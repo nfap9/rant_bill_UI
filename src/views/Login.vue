@@ -51,7 +51,7 @@ const onsubmit = () => {
       user
         .login(formData.value.username, formData.value.password)
         .then((res: any) => {
-          if (res.token) {
+          if (res.data.role === "Admin" && res.data.token) {
             ElMessage({
               message: "登录成功",
               type: "success",
@@ -65,8 +65,8 @@ const onsubmit = () => {
 
 const init = () => {
   formData.value = {
-    username: "user1",
-    password: "1234",
+    username: "admin",
+    password: "admin",
   };
 };
 

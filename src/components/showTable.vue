@@ -16,7 +16,7 @@
           <span v-if="item.type === 'gather'">
             <template v-for="tag in scope.row[item.prop]">
               <el-tag class="cell-tag" v-if="tag" type="primary">{{
-                tag.label
+                tag.label || tag
               }}</el-tag>
             </template>
           </span>

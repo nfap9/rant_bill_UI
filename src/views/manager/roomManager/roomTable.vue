@@ -85,8 +85,8 @@ function toTenantDetail(id: string) {
 }
 function getRoomList(_pager: Pager) {
   roomApi.list(_pager).then((res: any) => {
-    tableData.value = res.data;
-    pager.value = res.pager;
+    tableData.value = res.data.data;
+    pager.value = res.data.pager;
   });
 }
 const handleAddClick = () => {

@@ -22,8 +22,8 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.data.token) {
-      window.localStorage.setItem("token", response.data.token);
+    if (response.data.data.token) {
+      window.localStorage.setItem("token", response.data.data.token);
     }
     return response.data;
   },

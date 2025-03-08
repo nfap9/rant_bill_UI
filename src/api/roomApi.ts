@@ -3,7 +3,7 @@ import { get, post } from "./index";
 
 export default {
   add: (roomData: any) => {
-    return post("/room/add", { room: roomData });
+    return post("/room/add", roomData);
   },
   update: (roomId: string, room: any) => {
     return post("/room/update", { roomId, room });
